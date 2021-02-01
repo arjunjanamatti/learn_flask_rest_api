@@ -5,8 +5,10 @@ app = Flask(__name__)
 api = Api(app=app)
 
 # will make first resource
+name_dict = {'arjun': {'edu': 'grad', 'country':'India'},
+             'aj': {'edu': 'under-grad', 'country':'UK'}}
 
-
+         
 class Multiplication(Resource):
     def __init__(self):
         pass
@@ -27,6 +29,12 @@ class squre_number(Resource):
         return 'Numbers is {}'.format(c)   
 
 
+class info_dict(Resource):
+    def get(self, name):
+        return name_dict[name]
+
+
+api.add_resource(info_dict, '/info/<string:name>')
 api.add_resource(Multiplication, '/mul/<int:a>/<int:b>')
 api.add_resource(squre_number, '/result/<int:c>')
 
