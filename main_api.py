@@ -1,42 +1,32 @@
-from flask import Flask
-from flask_restful import Resource, Api
+from flask import Flask, request
+from flask_restful import Resource, Api, reqparse
+import werkzeug
 
 app = Flask(__name__)
 api = Api(app=app)
 
 # will make first resource
-name_dict = {'arjun': {'edu': 'grad', 'country':'India'},
-             'aj': {'edu': 'under-grad', 'country':'UK'}}
+# name_dict = {'arjun': {'edu': 'grad', 'country': 'India'},
+#              'aj': {'edu': 'under-grad', 'country': 'UK'}}
 
-         
-class Multiplication(Resource):
-    def __init__(self):
-        pass
+video_put_args = reqparse.RequestParser()
+video_put_args.add_argument('name', type=str, help='Name of the video')
+video_put_args.add_argument('views', type=int, help='Views of the video')
+video_put_args.add_argument('likes', type=int, help='Likes on the video')
 
-    def get(self, a, b):
-        return 'Result: {}'.format(a*b)
-
-    def post(self, a, b):
-        return 'Numbers are {}, {}'.format(a, b)
+videos = {}
 
 
-class squre_number(Resource):
-    def get(self, c):
-        # return 'Numbers is {}'.format(c) 
-        return 'Square of {} is {}'.format(c, c*c)
+class Video(Resource):
+    def get(self, video_id):
+        return videos[video_id]
 
-    def post(self, c):
-        return 'Numbers is {}'.format(c)   
-
-
-class info_dict(Resource):
-    def get(self, name):
-        return name_dict[name]
+    def put(self, video_id):
+        args = video_put_args.parse_args()
+        return {video_id: args}
 
 
-api.add_resource(info_dict, '/info/<string:name>')
-api.add_resource(Multiplication, '/mul/<int:a>/<int:b>')
-api.add_resource(squre_number, '/result/<int:c>')
+api.add_resource(Video, '/info/<int:video_id>')
 
 if __name__ == '__main__':
     app.run(debug=True)
