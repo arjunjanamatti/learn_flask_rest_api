@@ -20,7 +20,8 @@ data_list = [{'name':'aj', 'views':2, 'likes':10},
              {'name':'cj', 'views':22, 'likes':210},]
 
 for index, data in enumerate(data_list):
+    # print(index, data)
     response = requests.put('http://127.0.0.1:5000/info/{}'.format(index), data)
 
-response = requests.get('http://127.0.0.1:5000/info/11111')
-print('DELETE: ', response.json())
+response = requests.get('http://127.0.0.1:5000/info/1')
+print(response.json())
